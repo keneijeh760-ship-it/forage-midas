@@ -36,6 +36,7 @@ public class TransactionService {
         Transactions transactions = new Transactions(sender, reciepinet, transaction.getAmount());
         userRepository.save(sender);
         userRepository.save(reciepinet);
+        transactionsRepostiory.save(transactions);
 
 
     }
