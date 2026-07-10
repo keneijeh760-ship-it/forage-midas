@@ -8,6 +8,7 @@ import org.apache.catalina.User;
 public class Transactions {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

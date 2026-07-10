@@ -3,31 +3,41 @@ package com.jpmc.midascore.Service;
 import com.jpmc.midascore.entity.UserRecord;
 import com.jpmc.midascore.foundation.Transaction;
 import com.jpmc.midascore.foundation.Transactions;
-import com.jpmc.midascore.repository.TransactionsRepostiory;
+import com.jpmc.midascore.repository.TransactionsRepository;
+
 import com.jpmc.midascore.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class TransactionService {
 
     private final UserRepository userRepository;
-    private final TransactionsRepostiory  transactionsRepostiory;
+    private final TransactionsRepository transactionsRepository;
 
-    public TransactionService (UserRepository userRepository, TransactionsRepostiory  transactionsRepostiory) {
+    public TransactionService (UserRepository userRepository, TransactionsRepository transactionsRepository) {
         this.userRepository = userRepository;
-        this.transactionsRepostiory = transactionsRepostiory;
+        this.transactionsRepository = transactionsRepository;
     }
 
     public void sendTransaction(Transaction transaction) {
-        UserRecord sender = userRepository.findById(transaction.getSenderId())
-                .orElseThrow(() -> new RuntimeException("Sender not found"));
+        UserRecord sender = userRepository.findById(transaction.getSenderId());
 
-        UserRecord reciepinet = userRepository.findById(transaction.getRecipientId())
-                .orElseThrow(() -> new RuntimeException("Recipient not found"));
+        if (sender == null) {
+            return;
+        }
+
+        UserRecord reciepinet = userRepository.findById(transaction.getRecipientId());
+
+        if (reciepinet == null) {
+            return;
+        }
+
 
         if (sender.getBalance() < transaction.getAmount()) {
-            throw new RuntimeException();
+            return;
         }
 
         sender.setBalance(sender.getBalance() - transaction.getAmount());
@@ -36,7 +46,7 @@ public class TransactionService {
         Transactions transactions = new Transactions(sender, reciepinet, transaction.getAmount());
         userRepository.save(sender);
         userRepository.save(reciepinet);
-        transactionsRepostiory.save(transactions);
+        transactionsRepository.save(transactions);
 
 
     }
