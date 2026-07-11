@@ -12,6 +12,7 @@ public class Transaction {
     private long recipientId;
     private float amount;
 
+
     public Transaction() {
     }
 

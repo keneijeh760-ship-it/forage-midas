@@ -21,14 +21,60 @@ public class Transactions {
 
     private float balance;
 
+    private float incentives;
 
-    public Transactions(UserRecord sender, UserRecord recipient, float balance) {
+
+    public Transactions(UserRecord sender, UserRecord recipient, float balance, float incentives) {
         this.sender = sender;
         this.recipient = recipient;
         this.balance = balance;
+        this.incentives = incentives;
     }
 
     public Transactions() {
 
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public UserRecord getSender() {
+        return sender;
+    }
+
+    public void setSender(UserRecord sender) {
+        this.sender = sender;
+    }
+
+    public UserRecord getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(UserRecord recipient) {
+
+        this.recipient = recipient;
+    }
+
+    public float getBalance() {
+        return balance;
+    }
+
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
+
+    public float getIncentives() {
+        return incentives;
+
+
+    }
+    public void setIncentives(float incentives) {
+        this.incentives = incentives;
+    }
 }
+
